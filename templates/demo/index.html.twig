@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ dump(registrations) }}
+    <h1>Registration Portal</h1>
+
+    <h2>Create new registration</h2>
+    <form id="form-new-registration" action="{{ path('app_demo_register') }}">
+        <dl>
+            <dt>Firstname</dt>
+            <dd><input id="form-new-registration__first-name" type="text"></dd>
+            <dt>Lastname</dt>
+            <dd><input id="form-new-registration__last-name" type="text"></dd>
+        </dl>
+        <button type="submit">Register</button>
+        <br><br>
+
+        The following public key is used to encrypt the data (you may change the value to test with your own keypair):<br>
+        <textarea cols="80" rows="25" id="form-new-registration__public-key">{{ example_public_key }}</textarea>
+    </form>
+
+    <h2>Existing registrations</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Check-In Time</th>
+            <th>Check-Out Time</th>
+            <th>Payload (truncated)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Check-In Time</th>
+            <th>Check-Out Time</th>
+            <th>Payload (truncated)</th>
+            <th>Actions</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for registration in registrations %}
+            <tr>
+                <td>{{ registration.id }}</td>
+                <td>{{ registration.checkInTime|date() }}</td>
+                <td>{{ registration.checkOutTime is not null ? registration.checkOutTime|date() : '- still checked in -' }}</td>
+                <td>{{ registration.payload|u.truncate(30, '&hellip;')|raw }}</td>
+                <td>
+                    <button data-id="{{ registration.id }}" data-action="delete">Delete</button>
+                    {% if not registration.hasCheckedOut %}<button data-id="{{ registration.id }}" data-action="checkout">Check-Out</button>{% endif %}
+                    <button data-id="{{ registration.id }}" data-action="download">Download</button>
+                    <button data-id="{{ registration.id }}" data-action="decrypt">Decrypt</button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5"><strong><em>No records.</em></strong></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    The following private key is used to decrypt the data. Please insert the private key used to encrpyt the record you
+    want to decrypt (you can find the example private key in the project at <em>docs/example-keypair/private.pem</em>):<br>
+    <textarea cols="80" rows="25" id="decrypt-private-key"></textarea>
+{% endblock %}

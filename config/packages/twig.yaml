@@ -1,0 +1,8 @@
+parameters:
+    env(EXAMPLE_PUBLIC_KEY): '%kernel.project_dir%/docs/example-keypair/public.pem'
+
+twig:
+    default_path: '%kernel.project_dir%/templates'
+
+    globals:
+        example_public_key: '%env(file:EXAMPLE_PUBLIC_KEY)%'
