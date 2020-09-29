@@ -8,7 +8,7 @@ remain safely outside systems that are publically accessible.
 
 ## Installation Guide
 
-### TLDR
+### TL;DR
 
     docker-compose up -d
 
