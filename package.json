@@ -14,7 +14,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "axios": "^0.20.0",
+        "axios": "^0.21.1",
         "jsencrypt": "^3.0.0-rc.1"
     }
 }
